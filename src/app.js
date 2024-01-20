@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import categoriesRoutes from '../src/routes/categoriesRoutes.js';
 import booksRoutes from '../src/routes/booksRoutes.js';
+import cors from 'cors';
 // import authRoutes from './routes/authRoutes.js';
 import errorHandler from '../src/middlewares/errorMiddleware.js';
 
@@ -18,6 +19,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/books_db')
 .catch((err) => console.log(err));
 
 // Use Routes
+app.use(cors());
 app.use('/categories', categoriesRoutes);
 app.use('/books', booksRoutes);
 // app.use('/auth', authRoutes);
