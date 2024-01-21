@@ -1,6 +1,5 @@
-// categoriesRoutes.js
+
 import express from 'express';
-// import { authenticateUser } from '../middlewares/authMiddleware.js';
 import {
   getAllCategories,
   createCategory,
@@ -12,17 +11,11 @@ import {
 
 const router = express.Router();
 
-// router.get('/', getAllCategories);
-// router.post('/', authenticateUser, createCategory);
-// router.patch('/:id', authenticateUser, updateCategory);
-// router.delete('/:id', authenticateUser, deleteCategory);
-// router.get('/:id/books', getBooksByCategory);
-
-router.get('/', getAllCategories);
-router.get('/:id', getCategoryById)
-router.post('/', createCategory);
-router.patch('/:id', updateCategory);
-router.delete('/:id', deleteCategory);
-router.get('/:id/books', getBooksByCategory);
+router.get('/',getAllCategories);
+router.get('/:id',getCategoryById)
+router.post('/',createCategory);
+router.patch('/:id',updateCategory);
+router.delete('/:id',deleteCategory);
+router.get('/:id/books',getBooksByCategory);
 
 export default router;
