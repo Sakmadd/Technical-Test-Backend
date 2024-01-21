@@ -13,6 +13,22 @@ const determineThickness = (totalPage) => {
   else return 'tebal';
 };
 
+const getBookById = async (req, res) => {
+  try {
+    const bookId = req.params.id;
+    const book = await Book.findById(bookId);
+
+    if (!book) {
+      return res.status(404).json({ error: 'Book not found' });
+    }
+
+    res.json(book);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 const getAllBooks = async (req, res) => {
   try {
     const { title, minYear, maxYear, minPage, maxPage, sortByTitle } = req.query;
@@ -110,4 +126,4 @@ const deleteBook = (req, res) => {
   .catch((err) => res.status(404).json({ error: 'Book Not Found' }));;
 };
 
-export { getAllBooks, createBook, updateBook, deleteBook };
+export { getBookById, getAllBooks, createBook, updateBook, deleteBook };
