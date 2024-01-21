@@ -77,7 +77,7 @@ const createBook = (req, res) => {
 
 const updateBook = async (req, res) => {
   try {
-    const { title, description, image, release_year, price, total_page, category_id } = req.body;
+    const { title, description, image_url, release_year, price, total_page, category_id } = req.body;
     const bookId = req.params.id;
 
     if (!isValidReleaseYear(release_year)) {
@@ -91,7 +91,7 @@ const updateBook = async (req, res) => {
       {
         title,
         description,
-        image,
+        image_url,
         release_year,
         price,
         total_page,
