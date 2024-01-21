@@ -7,45 +7,34 @@ const isValidReleaseYear = (year) => {
   console.log('Is valid:', isValid);
   return isValid;
 };
-
-
 const determineThickness = (totalPage) => {
   if (totalPage <= 100) return 'tipis';
   else if (totalPage <= 200) return 'sedang';
   else return 'tebal';
 };
 
-const getAllBooks = (req, res) => {
-  let filter = {};
+const getAllBooks = async (req, res) => {
+  try {
+    const { title, minYear, maxYear, minPage, maxPage, sortByTitle } = req.query;
 
-  if (req.query.title) {
-    filter.title = { $regex: new RegExp(req.query.title, 'i') };
+    // Filter conditions
+    const filter = {};
+    if (title) filter.title = { $regex: new RegExp(title, 'i') }; // Case-insensitive title search
+    if (minYear) filter.release_year = { $gte: parseInt(minYear) };
+    if (maxYear) filter.release_year = { ...filter.release_year, $lte: parseInt(maxYear) };
+    if (minPage) filter.total_page = { $gte: parseInt(minPage) };
+    if (maxPage) filter.total_page = { ...filter.total_page, $lte: parseInt(maxPage) };
+
+    // Sorting
+    const sort = {};
+    if (sortByTitle) sort.title = sortByTitle === 'asc' ? 1 : -1;
+
+    const books = await Book.find(filter).sort(sort);
+    res.json(books);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to get books' });
   }
-
-  if (req.query.minYear) {
-    filter.release_year = { $gte: parseInt(req.query.minYear) };
-  }
-
-  if (req.query.maxYear) {
-    filter.release_year = { ...filter.release_year, $lte: parseInt(req.query.maxYear) };
-  }
-
-  if (req.query.minPage) {
-    filter.total_page = { $gte: parseInt(req.query.minPage) };
-  }
-
-  if (req.query.maxPage) {
-    filter.total_page = { ...filter.total_page, $lte: parseInt(req.query.maxPage) };
-  }
-
-  let sort = {};
-  if (req.query.sortByTitle) {
-    sort.title = req.query.sortByTitle === 'asc' ? 1 : -1;
-  }
-
-  Book.find(filter).sort(sort).exec()
-  .then((books) => res.json(books))
-  .catch((err) => res.status(404).json({ error: 'Failed to Get All Books' }));;
 };
 
 const createBook = (req, res) => {
