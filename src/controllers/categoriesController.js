@@ -1,4 +1,3 @@
-// categoriesController.js
 import Category from '../models/Category.js';
 import Book from '../models/Books.js';
 
@@ -32,13 +31,6 @@ const createCategory = (req, res) => {
   newCategory.save()
   .then((category) => {res.json(category)})
   .catch((err)=> res.status(400).json({ error: 'Failed to create category' }))
-  
-  // (err, category) => {
-  //   if (err) {
-  //     return res.status(400).json({ error: 'Failed to create category' });
-  //   }
-  //   res.json(category);
-  // });
 };
 
 const updateCategory = (req, res) => {
@@ -66,15 +58,13 @@ const getBooksByCategory = async (req, res) => {
     const categoryId = req.params.id;
     const { title, minYear, maxYear, minPage, maxPage, sortByTitle } = req.query;
 
-    // Filter conditions
     const filter = { category_id: categoryId };
-    if (title) filter.title = { $regex: new RegExp(title, 'i') }; // Case-insensitive title search
+    if (title) filter.title = { $regex: new RegExp(title, 'i') };
     if (minYear) filter.release_year = { $gte: parseInt(minYear) };
     if (maxYear) filter.release_year = { ...filter.release_year, $lte: parseInt(maxYear) };
     if (minPage) filter.total_page = { $gte: parseInt(minPage) };
     if (maxPage) filter.total_page = { ...filter.total_page, $lte: parseInt(maxPage) };
 
-    // Sorting
     const sort = {};
     if (sortByTitle) sort.title = sortByTitle === 'asc' ? 1 : -1;
 

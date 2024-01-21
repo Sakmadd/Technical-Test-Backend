@@ -1,4 +1,4 @@
-// booksController.js
+
 import Book from '../models/Books.js';
 
 const isValidReleaseYear = (year) => {
@@ -33,7 +33,6 @@ const getAllBooks = async (req, res) => {
   try {
     const { title, minYear, maxYear, minPage, maxPage, sortByTitle } = req.query;
 
-    // Filter conditions
     const filter = {};
     if (title) filter.title = { $regex: new RegExp(title, 'i') }; // Case-insensitive title search
     if (minYear) filter.release_year = { $gte: parseInt(minYear) };
@@ -41,7 +40,6 @@ const getAllBooks = async (req, res) => {
     if (minPage) filter.total_page = { $gte: parseInt(minPage) };
     if (maxPage) filter.total_page = { ...filter.total_page, $lte: parseInt(maxPage) };
 
-    // Sorting
     const sort = {};
     if (sortByTitle) sort.title = sortByTitle === 'asc' ? 1 : -1;
 
