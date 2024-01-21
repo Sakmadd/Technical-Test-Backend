@@ -49,18 +49,17 @@ const getAllBooks = (req, res) => {
 };
 
 const createBook = (req, res) => {
-  const { title, description, image, release_year, price, total_page, category_id } = req.body;
+  const { title, description, image_url, release_year, price, total_page, category_id } = req.body;
 
   if (!isValidReleaseYear(release_year)) {
     return res.status(400).json({ error: 'Invalid release year' });
   }
-
   const thickness = determineThickness(total_page);
 
   const newBook = new Book({
     title,
     description,
-    image,
+    image_url,
     release_year,
     price,
     total_page,
