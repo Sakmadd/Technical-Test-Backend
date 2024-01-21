@@ -48,9 +48,10 @@ const deleteCategory = (req, res) => {
 const getBooksByCategory = (req, res) => {
   const categoryId = req.params.id;
 
-  Book.find()
-  .then((books) => res.json(books))
-    .catch((err) => res.status(404).json({ error: 'Failed to Update Category' }));
+  Book.find({ category_id: categoryId })
+    .then((books) => res.json(books))
+    .catch((err) => res.status(404).json({ error: 'Failed to get books by category' }));
 };
+
 
 export { getAllCategories, createCategory, updateCategory, deleteCategory, getBooksByCategory };
